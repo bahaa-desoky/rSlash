@@ -21,6 +21,9 @@ environment:
   sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
+  page_view_indicators:
+  dots_indicator:
+  smooth_page_indicator:
   http:
   flutter:
     sdk: flutter
