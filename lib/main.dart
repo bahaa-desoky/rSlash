@@ -39,15 +39,15 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Future<List<Post>> _getUsers() async {
     var data = await http.get(
-        "http://www.json-generator.com/api/json/get/cfwkXWPKPS?indent=2"
-//        "http://www.json-generator.com/api/json/get/bUkuLpiSle?indent=2"
+//        "http://www.json-generator.com/api/json/get/cfwkXWPKPS?indent=2"
+        "http://wpapi.pythonanywhere.com/"
     );
     var jsonData = json.decode(data.body);
 
     List<Post> posts = [];
 
     for(var i in jsonData){
-      Post post = Post(i["title"], i["comments"]);
+      Post post = Post(i["title"], i["comments"], i["author"], i["comment authors"]);
       posts.add(post);
     }
 
@@ -110,7 +110,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     return Column(
                       children: [
                         Container(
-                          height: MediaQuery.of(context).size.height * 0.5,
+                          height: MediaQuery.of(context).size.height * 0.6,
                           width: MediaQuery.of(context).size.width,
                           child: PageView.builder(
                             controller: _pageController,
@@ -122,7 +122,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                 child: GestureDetector(
                                   onTap: (){
                                     Navigator.push(context,
-                                        new MaterialPageRoute(builder: (context) => DetailPage(snapshot.data[index]))
+                                        new MaterialPageRoute(builder: (context) => CommentsPage(snapshot.data[index]))
                                     );
                                   },
                                   child: Container(
@@ -136,29 +136,26 @@ class _MyHomePageState extends State<MyHomePage> {
                                           ),
 
                                           // writing prompts bubble
-                                          Padding(
-                                            padding: const EdgeInsets.only(left: 14, top: 10),
-                                            child: Align(
-                                              alignment: FractionalOffset.bottomLeft,
-                                              child: Container(
-                                                height: 35,
-                                                width: 150,
-                                                decoration: BoxDecoration(
-                                                    boxShadow: [
-                                                      BoxShadow(
-                                                        color: Colors.grey.withOpacity(0.5),
-                                                        spreadRadius: 2,
-                                                        blurRadius: 7,
-                                                        offset: Offset(3, 3), // changes position of shadow
-                                                      ),
-                                                    ],
-                                                    color: Colors.white,
-                                                    borderRadius: BorderRadius.circular(15)
-                                                ),
-                                                child: Center(child: Text('Writing Prompt', style: TextStyle(fontFamily: 'Noto', fontSize: 17),)),
+                                          Align(
+                                            alignment: FractionalOffset.bottomLeft,
+                                            child: Container(
+                                              padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
+                                              margin: EdgeInsets.only(left: 14, top: 10),
+                                              decoration: BoxDecoration(
+                                                  boxShadow: [
+                                                    BoxShadow(
+                                                      color: Colors.grey.withOpacity(0.5),
+                                                      spreadRadius: 2,
+                                                      blurRadius: 7,
+                                                      offset: Offset(3, 3), // changes position of shadow
+                                                    ),
+                                                  ],
+                                                  color: Colors.white,
+                                                  borderRadius: BorderRadius.circular(15)
                                               ),
+                                                child: Text('by u/ ${snapshot.data[index].author}', style: TextStyle(fontFamily: 'Noto', fontSize: 17),)
                                             ),
-                                          )
+                                          ),
                                         ]
                                     ),
                                   ),
@@ -167,7 +164,6 @@ class _MyHomePageState extends State<MyHomePage> {
                             },
                           ),
                         ),
-
                         // page indicator
                         SmoothPageIndicator(
                           controller: _pageController,
@@ -179,7 +175,6 @@ class _MyHomePageState extends State<MyHomePage> {
                             activeDotColor: Colors.blueGrey,
                           ),
                         ),
-
                       ],
                     );
                   }
@@ -194,9 +189,9 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 
-class DetailPage extends StatelessWidget {
+class CommentsPage extends StatelessWidget {
   final Post post;
-  DetailPage(this.post);
+  CommentsPage(this.post);
 
   List colors = [Color(0xFFf3ffe3), Color(0xFFc4faf8), Color(0xFFffcbc1), Color(0xFFaff8db), Color(0xFFecd4ff)];
   Random random = new Random();
@@ -251,14 +246,27 @@ class DetailPage extends StatelessWidget {
                         margin: EdgeInsets.only(top: 30, bottom: 30, right: 15, left: 15),
                         child: SingleChildScrollView(
                           physics: ScrollPhysics(),
-                          child: Column(
+                          child: Stack(
                             children: <Widget>[
                               Padding(
-                                padding: const EdgeInsets.all(22.0),
+                                padding: const EdgeInsets.fromLTRB(22, 50, 22, 22),
                                 child: Container(
                                   child: Text(post.comments[index], style: TextStyle(fontFamily: 'Noto', fontSize: 19),),
                                 ),
-                              )
+                              ),
+                              Align(
+                                  alignment: Alignment.center,
+                                  child: new Container(
+                                    width: double.infinity,
+                                    margin: EdgeInsets.fromLTRB(0, 0, 0, 5),
+                                    padding: EdgeInsets.all(5),
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20)),
+                                        color: Color(0xFFF2EEED),
+                                    ),
+                                    child: Center(child: new Text('by u/${post.commentAuthors[index]}', style: TextStyle(fontSize: 17, fontFamily: 'Noto'),)),
+                                  )
+                              ),
                             ],
                           ),
                         ),
@@ -276,8 +284,8 @@ class DetailPage extends StatelessWidget {
                 controller: _commentController,
                 count: post.comments.length,
                 effect: WormEffect(
-                  dotHeight: 15,
-                  dotWidth: 15,
+                  dotHeight: 10,
+                  dotWidth: 10,
                   dotColor: Color(0xFFb5b5b5),
                   activeDotColor: Colors.blueGrey,
                 ),
@@ -294,7 +302,10 @@ class DetailPage extends StatelessWidget {
 class Post {
   final String title;
   final List<dynamic> comments;
+  final String author;
+  final List<dynamic> commentAuthors;
 
-  Post(this.title, this.comments);
+
+  Post(this.title, this.comments, this.author, this.commentAuthors);
 
 }
