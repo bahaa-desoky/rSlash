@@ -126,7 +126,13 @@ class _MyHomePageState extends State<MyHomePage> {
                                     );
                                   },
                                   child: Container(
-                                    child: Column(
+                                    decoration: BoxDecoration(
+                                      image: DecorationImage(
+                                        image: AssetImage('assets/images/backdrop.png'),
+                                        fit: BoxFit.cover
+                                      )
+                                    ),
+                                    child: Stack(
                                         children: [
                                           ListTile(
                                             title: Padding(
@@ -136,8 +142,8 @@ class _MyHomePageState extends State<MyHomePage> {
                                           ),
 
                                           // writing prompts bubble
-                                          Align(
-                                            alignment: FractionalOffset.bottomLeft,
+                                          Positioned(
+                                            bottom: 20,
                                             child: Container(
                                               padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
                                               margin: EdgeInsets.only(left: 14, top: 10),
