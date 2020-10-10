@@ -52,9 +52,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
     for(var i in jsonData){
       Post post = Post(i["subreddit"], i["title"], i["comments"], i["author"], i["comment authors"], i["selftext"]);
-      if(post.subreddit == 'WritingPrompts'){
-        posts.add(post);
-      }
+      posts.add(post);
     }
 
     return posts;
@@ -65,61 +63,61 @@ class _MyHomePageState extends State<MyHomePage> {
     return new Scaffold(
       backgroundColor: Color(0xFF203040),
         key: _scaffoldKey,
-        drawer: Drawer(
-          child: Container(
-            decoration: BoxDecoration(
-              color: Color(0xFF203040)
-            ),
-            child: ListView(
-              children: [
-                DrawerHeader(
-                  decoration: BoxDecoration(
-                    color: Color(0xFF203040)
-                  ),
-                  child: Column(
-                    children: [
-                      Container(
-                        margin: EdgeInsets.only(top: 60),
-                        child: Align(
-                          alignment: Alignment.bottomLeft,
-                          child: Text('rSlash', style: TextStyle(fontFamily: 'Noto', fontSize: 30, color: fontColor),)
-                        )
-                      ),
-                      Align(
-                        alignment: Alignment.bottomLeft,
-                        child: Text('a collection of reddit short stories', style: TextStyle(fontFamily: 'Noto', fontSize: 16, color: Color(0xff66FFFFFF)),)
-                      )
-                    ],
-                  )
-                ),
-                Divider(
-                  indent: 5,
-                  endIndent: 5,
-                  color: Color(0xff66FFFFFF),
-                ),
-                ListTile(
-                  title: Text('WritingPrompts', style: TextStyle(fontFamily: 'Noto', fontSize: 20, color: fontColor),),
-                  subtitle: Text('stories inspired by prompts', style: TextStyle(fontFamily: 'Noto', fontSize: 13, color: Color(0xff66FFFFFF)),),
-                  trailing: Image.asset('assets/images/icons/writingPrompts.png', scale: 2.4,),
-                ),
-                ListTile(
-                  title: Text('nosleep', style: TextStyle(fontFamily: 'Noto', fontSize: 20, color: fontColor),),
-                  subtitle: Text('stories to keep you up at night', style: TextStyle(fontFamily: 'Noto', fontSize: 13, color: Color(0xff66FFFFFF)),),
-                  trailing: Image.asset('assets/images/icons/nosleep.png', scale: 2.4,),
-                ),
-                ListTile(
-                  title: Text('Saved', style: TextStyle(fontFamily: 'Noto', fontSize: 20, color: fontColor),),
-                  trailing: Image.asset('assets/images/icons/saved.png', scale: 2.7,),
-                ),
-                ListTile(
-                  title: Text('Login/Sign Up', style: TextStyle(fontFamily: 'Noto', fontSize: 20, color: fontColor),),
-                  trailing: Image.asset('assets/images/icons/login.png', scale: 2.6,),
-                ),
-
-              ],
-            ),
-          ),
-        ),
+//        drawer: Drawer(
+//          child: Container(
+//            decoration: BoxDecoration(
+//              color: Color(0xFF203040)
+//            ),
+//            child: ListView(
+//              children: [
+//                DrawerHeader(
+//                  decoration: BoxDecoration(
+//                    color: Color(0xFF203040)
+//                  ),
+//                  child: Column(
+//                    children: [
+//                      Container(
+//                        margin: EdgeInsets.only(top: 60),
+//                        child: Align(
+//                          alignment: Alignment.bottomLeft,
+//                          child: Text('rSlash', style: TextStyle(fontFamily: 'Noto', fontSize: 30, color: fontColor),)
+//                        )
+//                      ),
+//                      Align(
+//                        alignment: Alignment.bottomLeft,
+//                        child: Text('a collection of reddit short stories', style: TextStyle(fontFamily: 'Noto', fontSize: 16, color: Color(0xff66FFFFFF)),)
+//                      )
+//                    ],
+//                  )
+//                ),
+//                Divider(
+//                  indent: 5,
+//                  endIndent: 5,
+//                  color: Color(0xff66FFFFFF),
+//                ),
+//                ListTile(
+//                  title: Text('WritingPrompts', style: TextStyle(fontFamily: 'Noto', fontSize: 20, color: fontColor),),
+//                  subtitle: Text('stories inspired by prompts', style: TextStyle(fontFamily: 'Noto', fontSize: 13, color: Color(0xff66FFFFFF)),),
+//                  trailing: Image.asset('assets/images/icons/writingPrompts.png', scale: 2.4,),
+//                ),
+//                ListTile(
+//                  title: Text('nosleep', style: TextStyle(fontFamily: 'Noto', fontSize: 20, color: fontColor),),
+//                  subtitle: Text('stories to keep you up at night', style: TextStyle(fontFamily: 'Noto', fontSize: 13, color: Color(0xff66FFFFFF)),),
+//                  trailing: Image.asset('assets/images/icons/nosleep.png', scale: 2.4,),
+//                ),
+//                ListTile(
+//                  title: Text('Saved', style: TextStyle(fontFamily: 'Noto', fontSize: 20, color: fontColor),),
+//                  trailing: Image.asset('assets/images/icons/saved.png', scale: 2.7,),
+//                ),
+//                ListTile(
+//                  title: Text('Login/Sign Up', style: TextStyle(fontFamily: 'Noto', fontSize: 20, color: fontColor),),
+//                  trailing: Image.asset('assets/images/icons/login.png', scale: 2.6,),
+//                ),
+//
+//              ],
+//            ),
+//          ),
+//        ),
         body: SingleChildScrollView(
           physics: ScrollPhysics(),
           child: Column(
@@ -129,15 +127,15 @@ class _MyHomePageState extends State<MyHomePage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   // menu
-                  GestureDetector(
-                    onTap: (){
-                      _scaffoldKey.currentState.openDrawer();
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 20, top: 30),
-                      child: Image.asset('assets/images/menu-light.png', scale: 14,),
-                    ),
-                  ),
+//                  GestureDetector(
+//                    onTap: (){
+//                      _scaffoldKey.currentState.openDrawer();
+//                    },
+//                    child: Padding(
+//                      padding: const EdgeInsets.only(left: 20, top: 30),
+//                      child: Image.asset('assets/images/menu-light.png', scale: 14,),
+//                    ),
+//                  ),
                   // nightmode
 //                  Padding(
 //                    padding: const EdgeInsets.only(right: 20, top: 30 ),
@@ -148,7 +146,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
               // hello text
               Padding(
-                padding: const EdgeInsets.only(left: 20, top: 30),
+                padding: const EdgeInsets.only(left: 20, top: 50),
                 child: Align(
                     alignment: Alignment.centerLeft,
                     child: Text('Hello!', style: TextStyle(fontSize: 30, fontFamily: 'NotoLight' , color: fontColor))
@@ -295,7 +293,44 @@ class CommentsPage extends StatelessWidget {
           decoration: BoxDecoration(
               color: Color(0xFF101a24)
           ),
-          child: Column(
+          child: post.subreddit== 'nosleep' ?
+          Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.all(Radius.circular(20.0)),
+              color: Color(0xff203040),
+            ),
+            margin: EdgeInsets.only(top: 30, bottom: 30, right: 15, left: 15),
+            child: SingleChildScrollView(
+              physics: ScrollPhysics(),
+              child: Stack(
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(22, 50, 22, 22),
+                    child: Container(
+                      child: Text(post.selftext, style: TextStyle(fontFamily: 'Noto', fontSize: 19, color: fontColor),),
+                    ),
+                  ),
+                  Align(
+                      alignment: Alignment.center,
+                      child: new Container(
+                        width: double.infinity,
+                        margin: EdgeInsets.fromLTRB(0, 0, 0, 5),
+                        padding: EdgeInsets.all(5),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20)),
+                          color: Color(0xFF404850),
+                        ),
+                        child: Center(child: new Text('by u/${post.author}', style: TextStyle(fontSize: 17, fontFamily: 'Noto', color: fontColor),)),
+                      )
+                  ),
+                ],
+              ),
+            ),
+          )
+
+              :
+
+          Column(
             children: [
               // story comments
               Expanded(
@@ -311,12 +346,6 @@ class CommentsPage extends StatelessWidget {
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.all(Radius.circular(20.0)),
                               color: Color(0xff203040),
-//                              boxShadow: [
-//                                BoxShadow(
-//                                    color: Colors.grey,
-//                                    offset: Offset(0, 4),
-//                                    blurRadius: 4)
-//                              ]
                           ),
                           duration: Duration(milliseconds: 500),
                           curve: Curves.easeInOutQuint,
