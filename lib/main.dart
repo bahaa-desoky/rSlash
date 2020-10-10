@@ -16,6 +16,10 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
     return new MaterialApp(
       title: 'Flutter Demo',
       home: new MyHomePage(title: 'Users'),
@@ -182,7 +186,7 @@ class _MyHomePageState extends State<MyHomePage> {
                               itemCount: snapshot.data.length,
                               itemBuilder: (BuildContext context, int index) {
                                 return Card(
-                                  margin: EdgeInsets.all(10),
+                                  margin: EdgeInsets.fromLTRB(14, 10, 14, 10),
                                   color: colors[Random().nextInt(colors.length)],
                                   child: GestureDetector(
                                     onTap: (){
@@ -237,7 +241,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           ),
                           // page indicator
                           Padding(
-                            padding: const EdgeInsets.all(8.0),
+                            padding: const EdgeInsets.fromLTRB(8.0, 27.0, 8.0, 8.0),
                             child: SmoothPageIndicator(
                               controller: _pageController,
                               count: snapshot.data.length,
