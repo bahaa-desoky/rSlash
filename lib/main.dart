@@ -21,25 +21,26 @@ class MyApp extends StatelessWidget {
       DeviceOrientation.portraitDown,
     ]);
     return new MaterialApp(
-      title: 'Flutter Demo',
-      home: new MyHomePage(title: 'Users'),
+      title: 'rSlash',
+      home: new HomePage(title: 'Posts'),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
+class HomePage extends StatefulWidget {
+  HomePage({Key key, this.title}) : super(key: key);
 
   final String title;
 
   @override
-  _MyHomePageState createState() => new _MyHomePageState();
+  _HomePageState createState() => new _HomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _HomePageState extends State<HomePage> {
   GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey();
-  var fontColor = Color(0xFFe8e7e0);
 
+
+  var fontColor = Color(0xFFe8e7e0);
   List colors = [Color(0xFFf3ffe3), Color(0xFFc4faf8), Color(0xFFffcbc1), Color(0xFFaff8db), Color(0xFFecd4ff),Color(0xFFf3ffe3), Color(0xFFc4faf8), Color(0xFFffcbc1), Color(0xFFaff8db), Color(0xFFecd4ff)];
   Random random = new Random();
 
@@ -47,7 +48,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Future<List<Post>> _getUsers() async {
     var data = await http.get(
-//        "http://www.json-generator.com/api/json/get/cfwkXWPKPS?indent=2"
         "http://wpapi.pythonanywhere.com/"
     );
     var jsonData = json.decode(data.body);
@@ -67,88 +67,10 @@ class _MyHomePageState extends State<MyHomePage> {
     return new Scaffold(
       backgroundColor: Color(0xFF203040),
         key: _scaffoldKey,
-//        drawer: Drawer(
-//          child: Container(
-//            decoration: BoxDecoration(
-//              color: Color(0xFF203040)
-//            ),
-//            child: ListView(
-//              children: [
-//                DrawerHeader(
-//                  decoration: BoxDecoration(
-//                    color: Color(0xFF203040)
-//                  ),
-//                  child: Column(
-//                    children: [
-//                      Container(
-//                        margin: EdgeInsets.only(top: 60),
-//                        child: Align(
-//                          alignment: Alignment.bottomLeft,
-//                          child: Text('rSlash', style: TextStyle(fontFamily: 'Noto', fontSize: 30, color: fontColor),)
-//                        )
-//                      ),
-//                      Align(
-//                        alignment: Alignment.bottomLeft,
-//                        child: Text('a collection of reddit short stories', style: TextStyle(fontFamily: 'Noto', fontSize: 16, color: Color(0xff66FFFFFF)),)
-//                      )
-//                    ],
-//                  )
-//                ),
-//                Divider(
-//                  indent: 5,
-//                  endIndent: 5,
-//                  color: Color(0xff66FFFFFF),
-//                ),
-//                ListTile(
-//                  title: Text('WritingPrompts', style: TextStyle(fontFamily: 'Noto', fontSize: 20, color: fontColor),),
-//                  subtitle: Text('stories inspired by prompts', style: TextStyle(fontFamily: 'Noto', fontSize: 13, color: Color(0xff66FFFFFF)),),
-//                  trailing: Image.asset('assets/images/icons/writingPrompts.png', scale: 2.4,),
-//                ),
-//                ListTile(
-//                  title: Text('nosleep', style: TextStyle(fontFamily: 'Noto', fontSize: 20, color: fontColor),),
-//                  subtitle: Text('stories to keep you up at night', style: TextStyle(fontFamily: 'Noto', fontSize: 13, color: Color(0xff66FFFFFF)),),
-//                  trailing: Image.asset('assets/images/icons/nosleep.png', scale: 2.4,),
-//                ),
-//                ListTile(
-//                  title: Text('Saved', style: TextStyle(fontFamily: 'Noto', fontSize: 20, color: fontColor),),
-//                  trailing: Image.asset('assets/images/icons/saved.png', scale: 2.7,),
-//                ),
-//                ListTile(
-//                  title: Text('Login/Sign Up', style: TextStyle(fontFamily: 'Noto', fontSize: 20, color: fontColor),),
-//                  trailing: Image.asset('assets/images/icons/login.png', scale: 2.6,),
-//                ),
-//
-//              ],
-//            ),
-//          ),
-//        ),
         body: SingleChildScrollView(
           physics: ScrollPhysics(),
           child: Column(
             children: [
-              //menu and nightmode
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  // menu
-//                  GestureDetector(
-//                    onTap: (){
-//                      _scaffoldKey.currentState.openDrawer();
-//                    },
-//                    child: Padding(
-//                      padding: const EdgeInsets.only(left: 20, top: 30),
-//                      child: Image.asset('assets/images/menu-light.png', scale: 14,),
-//                    ),
-//                  ),
-                  // nightmode
-//                  Padding(
-//                    padding: const EdgeInsets.only(right: 20, top: 30 ),
-//                    child: Image.asset('assets/images/nightmode.png', scale: 14)
-//                  )
-                ],
-              ),
-
-              // hello text
               Padding(
                 padding: const EdgeInsets.only(left: 20, top: 50),
                 child: Align(
@@ -171,11 +93,15 @@ class _MyHomePageState extends State<MyHomePage> {
                     print(snapshot.data);
                     if(snapshot.data == null){
                       return Container(
+                          padding: EdgeInsets.all(120),
                           child: Center(
-                              child: Text("Loading...")
+                              child: CircularProgressIndicator(
+                                backgroundColor: Colors.grey,
+                                valueColor: AlwaysStoppedAnimation<Color>(Colors.white),)
                           )
                       );
-                    } else {
+                    }
+                    else {
                       return Column(
                         children: [
                           Container(
@@ -195,12 +121,6 @@ class _MyHomePageState extends State<MyHomePage> {
                                       );
                                     },
                                     child: Container(
-//                                      decoration: BoxDecoration(
-//                                          image: DecorationImage(
-//                                              image: AssetImage('assets/images/backdrop.png'),
-//                                              fit: BoxFit.cover
-//                                          )
-//                                      ),
                                       child: Stack(
                                           children: [
                                             ListTile(
@@ -239,6 +159,7 @@ class _MyHomePageState extends State<MyHomePage> {
                               },
                             ),
                           ),
+
                           // page indicator
                           Padding(
                             padding: const EdgeInsets.fromLTRB(8.0, 27.0, 8.0, 8.0),
@@ -259,7 +180,6 @@ class _MyHomePageState extends State<MyHomePage> {
                   },
                 ),
               ),
-
             ],
           ),
         )
@@ -270,8 +190,8 @@ class _MyHomePageState extends State<MyHomePage> {
 class CommentsPage extends StatelessWidget {
   final Post post;
   CommentsPage(this.post);
-  var fontColor = Color(0xFFe8e8e8);
 
+  var fontColor = Color(0xFFe8e8e8);
   List colors = [Color(0xFFf3ffe3), Color(0xFFc4faf8), Color(0xFFffcbc1), Color(0xFFaff8db), Color(0xFFecd4ff)];
   Random random = new Random();
   int index = 0;
@@ -283,7 +203,8 @@ class CommentsPage extends StatelessWidget {
       context: context,
       builder: (context){
         return AlertDialog(
-          content: Text(post.title, style: TextStyle(fontFamily: 'Noto', fontSize: 20),),
+          backgroundColor: Color(0xFF203040),
+          content: Text(post.title, style: TextStyle(fontFamily: 'Noto', fontSize: 20, color: fontColor),),
         );
       },
     );
@@ -331,9 +252,7 @@ class CommentsPage extends StatelessWidget {
               ),
             ),
           )
-
               :
-
           Column(
             children: [
               // story comments
@@ -380,7 +299,6 @@ class CommentsPage extends StatelessWidget {
                               ],
                             ),
                           ),
-
                         ),
                       );
                     }
@@ -401,7 +319,6 @@ class CommentsPage extends StatelessWidget {
                   ),
                 ),
               ),
-
             ],
           )
       ),
