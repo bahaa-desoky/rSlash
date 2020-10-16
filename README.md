@@ -1,8 +1,8 @@
-# json_test
+# r/Slash
 
-A new Flutter application.
+An app built with Flutter that aggregates the top prompts and short stories from r/WritingPrompts and r/nosleep for a user-friendly reading experience.
 
-## Getting Started
+## Screenshots
 
 This project is a starting point for a Flutter application.
 
