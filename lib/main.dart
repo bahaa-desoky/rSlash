@@ -10,10 +10,10 @@ import 'dart:math';
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setEnabledSystemUIOverlays([]);
-  runApp(new MyApp());
+  runApp(new MainApp());
 }
 
-class MyApp extends StatelessWidget {
+class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     SystemChrome.setPreferredOrientations([
@@ -29,16 +29,17 @@ class MyApp extends StatelessWidget {
 
 class HomePage extends StatefulWidget {
   HomePage({Key key, this.title}) : super(key: key);
-
   final String title;
 
   @override
   _HomePageState createState() => new _HomePageState();
 }
 
+
+// The homepage that users see when the app is launched.
+// Contains: Welcome message and the top stories of the day from r/WritingPrompts and r/nosleep
 class _HomePageState extends State<HomePage> {
   GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey();
-
 
   var fontColor = Color(0xFFe8e7e0);
   List colors = [Color(0xFFf3ffe3), Color(0xFFc4faf8), Color(0xFFffcbc1), Color(0xFFaff8db), Color(0xFFecd4ff),Color(0xFFf3ffe3), Color(0xFFc4faf8), Color(0xFFffcbc1), Color(0xFFaff8db), Color(0xFFecd4ff)];
@@ -46,15 +47,16 @@ class _HomePageState extends State<HomePage> {
 
   PageController _pageController = PageController(initialPage: 0);
 
-  Future<List<Post>> _getUsers() async {
+  // Future that retrieves post json data from custom-made API
+  Future<List<Post>> _getStories() async {
     var data = await http.get(
         "http://wpapi.pythonanywhere.com/"
     );
-    var jsonData = json.decode(data.body);
+    var jsonAPIData = json.decode(data.body);
 
     List<Post> posts = [];
 
-    for(var i in jsonData){
+    for(var i in jsonAPIData){
       Post post = Post(i["subreddit"], i["title"], i["comments"], i["author"], i["comment authors"], i["selftext"]);
       posts.add(post);
     }
@@ -71,6 +73,7 @@ class _HomePageState extends State<HomePage> {
           physics: ScrollPhysics(),
           child: Column(
             children: [
+              // Hello welcome text
               Padding(
                 padding: const EdgeInsets.only(left: 20, top: 50),
                 child: Align(
@@ -79,19 +82,20 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
 
-              // top stories text
+              // Top stories welcome text
               Padding(
                 padding: const EdgeInsets.only(left: 20.0, right: 15, bottom: 15),
                 child: Text('Here are today\'s top stories:', style: TextStyle(fontSize: 35, fontFamily: 'Noto', color: fontColor),),
               ),
 
-              // writing prompt tiles
+              // Title tiles
               Container(
                 child: FutureBuilder(
-                  future: _getUsers(),
+                  future: _getStories(),
                   builder: (BuildContext context, AsyncSnapshot snapshot){
                     print(snapshot.data);
                     if(snapshot.data == null){
+                      // Loading indicator if there is no internet, or any other errors
                       return Container(
                           padding: EdgeInsets.all(120),
                           child: Center(
@@ -117,7 +121,7 @@ class _HomePageState extends State<HomePage> {
                                   child: GestureDetector(
                                     onTap: (){
                                       Navigator.push(context,
-                                          new MaterialPageRoute(builder: (context) => CommentsPage(snapshot.data[index]))
+                                          new MaterialPageRoute(builder: (context) => StoriesPage(snapshot.data[index]))
                                       );
                                     },
                                     child: Container(
@@ -130,7 +134,7 @@ class _HomePageState extends State<HomePage> {
                                               ),
                                             ),
 
-                                            // writing prompts bubble
+                                            // Author bubble
                                             Positioned(
                                               bottom: 20,
                                               child: Container(
@@ -142,7 +146,7 @@ class _HomePageState extends State<HomePage> {
                                                           color: Colors.grey.withOpacity(0.5),
                                                           spreadRadius: 2,
                                                           blurRadius: 7,
-                                                          offset: Offset(3, 3), // changes position of shadow
+                                                          offset: Offset(3, 3),
                                                         ),
                                                       ],
                                                       color: Colors.white,
@@ -160,7 +164,7 @@ class _HomePageState extends State<HomePage> {
                             ),
                           ),
 
-                          // page indicator
+                          // Page indicator (for titles)
                           Padding(
                             padding: const EdgeInsets.fromLTRB(8.0, 27.0, 8.0, 8.0),
                             child: SmoothPageIndicator(
@@ -187,9 +191,12 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
-class CommentsPage extends StatelessWidget {
+
+// The stories page that appears when you tap a prompt/story.
+// Contains: comments with stories (WritingPrompts) or a single story (nosleep)
+class StoriesPage extends StatelessWidget {
   final Post post;
-  CommentsPage(this.post);
+  StoriesPage(this.post);
 
   var fontColor = Color(0xFFe8e8e8);
   List colors = [Color(0xFFf3ffe3), Color(0xFFc4faf8), Color(0xFFffcbc1), Color(0xFFaff8db), Color(0xFFecd4ff)];
@@ -198,7 +205,7 @@ class CommentsPage extends StatelessWidget {
 
   PageController _commentController = PageController(initialPage: 0);
 
-  titleDialog(BuildContext context) {
+  titleReminderDialog(BuildContext context) {
     showDialog(
       context: context,
       builder: (context){
@@ -219,6 +226,7 @@ class CommentsPage extends StatelessWidget {
               color: Color(0xFF101a24)
           ),
           child: post.subreddit== 'nosleep' ?
+          // r/nosleep stories
           Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.all(Radius.circular(20.0)),
@@ -253,9 +261,9 @@ class CommentsPage extends StatelessWidget {
             ),
           )
               :
+          // r/WritingPrompt story comments
           Column(
             children: [
-              // story comments
               Expanded(
                 child: PageView.builder(
                     controller: _commentController,
@@ -263,7 +271,7 @@ class CommentsPage extends StatelessWidget {
                     itemBuilder: (BuildContext context, int index){
                       return GestureDetector(
                         onLongPress: () {
-                          titleDialog(context);
+                          titleReminderDialog(context);
                         },
                         child: AnimatedContainer(
                           decoration: BoxDecoration(
@@ -305,7 +313,7 @@ class CommentsPage extends StatelessWidget {
                 ),
               ),
 
-              // page indicator
+              // Page indicator (stories/comments)
               Container(
                 margin: EdgeInsets.fromLTRB(0, 0, 0, 20),
                 child: SmoothPageIndicator(
@@ -326,6 +334,9 @@ class CommentsPage extends StatelessWidget {
   }
 }
 
+
+// Post class that is called by the Future to retrieve title, author, comments, etc., from
+// each post in the API.
 class Post {
   final String subreddit;
   final String title;
