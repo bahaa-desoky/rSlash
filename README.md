@@ -1,4 +1,4 @@
-# r/Slash
+# rSlash
 
 An app built with Flutter that aggregates the top prompts and short stories from r/WritingPrompts and r/nosleep for a user-friendly reading experience.
 
