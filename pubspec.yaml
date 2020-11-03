@@ -1,4 +1,4 @@
-name: json_test
+name: rSlash
 description: A new Flutter application.
 
 # The following line prevents the package from being accidentally published to
@@ -21,6 +21,8 @@ environment:
   sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
+  flutter_markdown:
+  url_launcher:
   page_view_indicators:
   dots_indicator:
   smooth_page_indicator:

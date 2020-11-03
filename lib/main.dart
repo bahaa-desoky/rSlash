@@ -6,6 +6,9 @@ import 'dart:async';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:math';
+import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:url_launcher/url_launcher.dart';
+
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -240,7 +243,14 @@ class StoriesPage extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.fromLTRB(22, 50, 22, 22),
                     child: Container(
-                      child: Text(post.selftext, style: TextStyle(fontFamily: 'Noto', fontSize: 19, color: fontColor),),
+                      height: MediaQuery.of(context).size.height,
+                      child: MarkdownBody(
+                          selectable: false,
+                          data: post.selftext,
+                          styleSheet: MarkdownStyleSheet(
+                            p: TextStyle(color: fontColor, fontSize: 19, fontFamily: "Noto"),
+                          ),
+                      )
                     ),
                   ),
                   Align(
@@ -288,7 +298,15 @@ class StoriesPage extends StatelessWidget {
                                 Padding(
                                   padding: const EdgeInsets.fromLTRB(22, 50, 22, 22),
                                   child: Container(
-                                    child: Text(post.comments[index], style: TextStyle(fontFamily: 'Noto', fontSize: 19, color: fontColor),),
+                                    child: Container(
+                                      height: MediaQuery.of(context).size.height,
+                                      child: Markdown(
+                                        data: post.comments[index],
+                                        styleSheet: MarkdownStyleSheet(
+                                          p: TextStyle(color: fontColor, fontFamily: "Noto", fontSize: 19)
+                                        ),
+                                      ),
+                                    )
                                   ),
                                 ),
                                 Align(
