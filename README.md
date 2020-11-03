@@ -3,8 +3,9 @@
 An app built with Flutter that aggregates the top prompts and short stories from r/WritingPrompts and r/nosleep for a user-friendly reading experience. Read the best user-prompted
 short stories from r/WritingPrompts, and the spookiest tales from r/nosleep, updated daily. This is an ongoing project, and will recieve updates when possible.
 
-**Upcoming Features:**
+**Upcoming Features (in order of priority):**
 
+- Markdown Support
 - More subreddits to be added (more stories)
   - r/hfy
   - others when I am notified of them
