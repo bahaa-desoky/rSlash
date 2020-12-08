@@ -68,10 +68,10 @@ class wpPosts extends StatelessWidget {
                 );
               }
               else {
-                return Column(
+                return ListView(
                   children: [
                     Container(
-                      height: MediaQuery.of(context).size.height,
+                      height: MediaQuery.of(context).size.height*0.9,
                       width: MediaQuery.of(context).size.width,
                       child: ListView.builder(
                         itemCount: snapshot.data.length,
@@ -90,32 +90,32 @@ class wpPosts extends StatelessWidget {
                                     children: [
                                       ListTile(
                                         title: Padding(
-                                          padding: const EdgeInsets.fromLTRB(5, 10, 5, 7),
-                                          child: Text(snapshot.data[index].title, style: TextStyle(fontFamily: 'Noto', fontSize: 20),),
+                                          padding: const EdgeInsets.fromLTRB(5, 10, 5, 70),
+                                          child: Text(snapshot.data[index].title, style: TextStyle(fontFamily: 'Noto', fontSize: 19),),
                                         ),
                                       ),
 
-                                      // Author bubble
-                                      // Positioned(
-                                      //   bottom: 20,
-                                      //   child: Container(
-                                      //       padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
-                                      //       margin: EdgeInsets.only(left: 14, top: 10),
-                                      //       decoration: BoxDecoration(
-                                      //           boxShadow: [
-                                      //             BoxShadow(
-                                      //               color: Colors.grey.withOpacity(0.5),
-                                      //               spreadRadius: 2,
-                                      //               blurRadius: 7,
-                                      //               offset: Offset(3, 3),
-                                      //             ),
-                                      //           ],
-                                      //           color: Colors.white,
-                                      //           borderRadius: BorderRadius.circular(15)
-                                      //       ),
-                                      //       child: Text('by u/${snapshot.data[index].author}', style: TextStyle(fontFamily: 'Noto', fontSize: 17),)
-                                      //   ),
-                                      // ),
+                                      //Author bubble
+                                      Positioned(
+                                        bottom: 20,
+                                        child: Container(
+                                            padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
+                                            margin: EdgeInsets.only(left: 14, top: 10),
+                                            decoration: BoxDecoration(
+                                                boxShadow: [
+                                                  BoxShadow(
+                                                    color: Colors.grey.withOpacity(0.5),
+                                                    spreadRadius: 2,
+                                                    blurRadius: 7,
+                                                    offset: Offset(3, 3),
+                                                  ),
+                                                ],
+                                                color: Colors.white,
+                                                borderRadius: BorderRadius.circular(15)
+                                            ),
+                                            child: Text('by u/${snapshot.data[index].author}', style: TextStyle(fontFamily: 'Noto', fontSize: 17),)
+                                        ),
+                                      ),
                                     ]
                                 ),
                               ),

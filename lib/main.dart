@@ -60,8 +60,9 @@ class _HomePageState extends State<HomePage> {
     var jsonAPIData = json.decode(data.body);
 
     List<Post> posts = [];
+    List mp = [jsonAPIData[0], jsonAPIData[5], jsonAPIData[17], jsonAPIData[23], jsonAPIData[3], jsonAPIData[27], jsonAPIData[13]];
 
-    for(var i in jsonAPIData){
+    for(var i in mp){
       Post post = Post(i["subreddit"], i["title"], i["comments"], i["author"], i["comment authors"], i["selftext"]);
       posts.add(post);
     }
@@ -189,7 +190,7 @@ class _HomePageState extends State<HomePage> {
                       return Column(
                         children: [
                           Container(
-                            height: MediaQuery.of(context).size.height * 0.6,
+                            height: MediaQuery.of(context).size.height * 0.55,
                             width: MediaQuery.of(context).size.width,
                             child: PageView.builder(
                               controller: _pageController,
@@ -210,7 +211,7 @@ class _HomePageState extends State<HomePage> {
                                             ListTile(
                                               title: Padding(
                                                 padding: const EdgeInsets.fromLTRB(5, 10, 5, 7),
-                                                child: Text(snapshot.data[index].title, style: TextStyle(fontFamily: 'Noto', fontSize: 20),),
+                                                child: Text(snapshot.data[index].title, style: TextStyle(fontFamily: 'Noto', fontSize: 19),),
                                               ),
                                             ),
 
@@ -314,6 +315,7 @@ class StoriesPage extends StatelessWidget {
       //     preferredSize: Size.fromHeight(30.0)
       // ),
       body: Container(
+        height: MediaQuery.of(context).size.height,
           decoration: BoxDecoration(
               color: Color(0xFF101a24)
           ),
@@ -332,7 +334,7 @@ class StoriesPage extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.fromLTRB(22, 50, 22, 22),
                     child: Container(
-                      height: MediaQuery.of(context).size.height,
+                      height: MediaQuery.of(context).size.height*0.8,
                       child: ListView(
                         children: [
                           MarkdownBody(
@@ -401,7 +403,8 @@ class StoriesPage extends StatelessWidget {
                                 Padding(
                                   padding: const EdgeInsets.fromLTRB(22, 50, 22, 22),
                                   child: Container(
-                                    child: Container(
+                                      height: MediaQuery.of(context).size.height*0.8,
+                                      child: Container(
                                       height: MediaQuery.of(context).size.height,
                                       child: Markdown(
                                         data: post.comments[index],
@@ -427,7 +430,7 @@ class StoriesPage extends StatelessWidget {
                                           BackButton(
                                               color: fontColor
                                           ),
-                                          Center(child: new Text('by u/${post.author}', style: TextStyle(fontSize: 17, fontFamily: 'Noto', color: fontColor),)),
+                                          Center(child: new Text('by u/${post.commentAuthors[index]}', style: TextStyle(fontSize: 17, fontFamily: 'Noto', color: fontColor),)),
                                         ],
                                       )
                                     )
