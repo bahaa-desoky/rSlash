@@ -8,6 +8,9 @@ import 'dart:convert';
 import 'dart:math';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'colors.dart';
+import 'writing-prompts-page.dart';
+import 'nosleep-page.dart';
 
 
 void main() {
@@ -45,7 +48,6 @@ class _HomePageState extends State<HomePage> {
   GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey();
 
   var fontColor = Color(0xFFe8e7e0);
-  List colors = [Color(0xFFf3ffe3), Color(0xFFc4faf8), Color(0xFFffcbc1), Color(0xFFaff8db), Color(0xFFecd4ff),Color(0xFFf3ffe3), Color(0xFFc4faf8), Color(0xFFffcbc1), Color(0xFFaff8db), Color(0xFFecd4ff)];
   Random random = new Random();
 
   PageController _pageController = PageController(initialPage: 0);
@@ -72,10 +74,85 @@ class _HomePageState extends State<HomePage> {
     return new Scaffold(
       backgroundColor: Color(0xFF203040),
         key: _scaffoldKey,
+        drawer: Drawer(
+          child: Container(
+            decoration: BoxDecoration(
+                color: Color(0xFF203040)
+            ),
+            child: ListView(
+              children: [
+                DrawerHeader(
+                    decoration: BoxDecoration(
+                        color: Color(0xFF203040)
+                    ),
+                    child: Column(
+                      children: [
+                        Container(
+                            margin: EdgeInsets.only(top: 60),
+                            child: Align(
+                                alignment: Alignment.bottomLeft,
+                                child: Text('rSlash', style: TextStyle(fontFamily: 'Noto', fontSize: 30, color: fontColor),)
+                            )
+                        ),
+                        Align(
+                            alignment: Alignment.bottomLeft,
+                            child: Text('a collection of reddit short stories', style: TextStyle(fontFamily: 'Noto', fontSize: 16, color: Color(0xff66FFFFFF)),)
+                        )
+                      ],
+                    )
+                ),
+                Divider(
+                  indent: 5,
+                  endIndent: 5,
+                  color: Color(0xff66FFFFFF),
+                ),
+                ListTile(
+                  title: Text('r/WritingPrompts', style: TextStyle(fontFamily: 'Noto', fontSize: 20, color: fontColor),),
+                  subtitle: Text('stories inspired by prompts', style: TextStyle(fontFamily: 'Noto', fontSize: 13, color: Color(0xff66FFFFFF)),),
+                  trailing: Image.asset('assets/images/icons/writingPrompts.png', scale: 2.4,),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => wpPosts()),
+                    );
+                  },
+                ),
+                ListTile(
+                  title: Text('r/nosleep', style: TextStyle(fontFamily: 'Noto', fontSize: 20, color: fontColor),),
+                  subtitle: Text('stories to keep you up at night', style: TextStyle(fontFamily: 'Noto', fontSize: 13, color: Color(0xff66FFFFFF)),),
+                  trailing: Image.asset('assets/images/icons/nosleep.png', scale: 2.4,),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => nsPosts()),
+                    );
+                  },
+                ),
+
+              ],
+            ),
+          ),
+        ),
+
         body: SingleChildScrollView(
           physics: ScrollPhysics(),
           child: Column(
             children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  // menu
+                  GestureDetector(
+                    onTap: (){
+                      _scaffoldKey.currentState.openDrawer();
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 20, top: 30),
+                      child: Image.asset('assets/images/menu-light.png', scale: 14,),
+                    ),
+                  ),
+                ],
+              ),
               // Hello welcome text
               Padding(
                 padding: const EdgeInsets.only(left: 20, top: 50),
@@ -120,7 +197,7 @@ class _HomePageState extends State<HomePage> {
                               itemBuilder: (BuildContext context, int index) {
                                 return Card(
                                   margin: EdgeInsets.fromLTRB(14, 10, 14, 10),
-                                  color: colors[Random().nextInt(colors.length)],
+                                  color: colors[index], // changed the color to be index, try it out?
                                   child: GestureDetector(
                                     onTap: (){
                                       Navigator.push(context,
@@ -224,6 +301,18 @@ class StoriesPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // appBar: PreferredSize(
+      //     child: AppBar(
+      //       backgroundColor: Color(0xFF101a24),
+      //       leading: BackButton(
+      //         color: fontColor,
+      //         onPressed: () {
+      //           Navigator.pop(context);
+      //         },
+      //       ),
+      //     ),
+      //     preferredSize: Size.fromHeight(30.0)
+      // ),
       body: Container(
           decoration: BoxDecoration(
               color: Color(0xFF101a24)
@@ -244,12 +333,19 @@ class StoriesPage extends StatelessWidget {
                     padding: const EdgeInsets.fromLTRB(22, 50, 22, 22),
                     child: Container(
                       height: MediaQuery.of(context).size.height,
-                      child: MarkdownBody(
-                          selectable: false,
-                          data: post.selftext,
-                          styleSheet: MarkdownStyleSheet(
-                            p: TextStyle(color: fontColor, fontSize: 19, fontFamily: "Noto"),
+                      child: ListView(
+                        children: [
+                          MarkdownBody(
+                            selectable: true,
+                            onTapLink: (text, href, title) {
+                              launch(href);
+                            },
+                            data: post.selftext,
+                            styleSheet: MarkdownStyleSheet(
+                              p: TextStyle(color: fontColor, fontSize: 19, fontFamily: "Noto"),
+                            ),
                           ),
+                        ],
                       )
                     ),
                   ),
@@ -263,7 +359,14 @@ class StoriesPage extends StatelessWidget {
                           borderRadius: BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20)),
                           color: Color(0xFF404850),
                         ),
-                        child: Center(child: new Text('by u/${post.author}', style: TextStyle(fontSize: 17, fontFamily: 'Noto', color: fontColor),)),
+                        child: Row(
+                          children: [
+                            BackButton(
+                              color: fontColor
+                            ),
+                            Center(child: new Text('by u/${post.author}', style: TextStyle(fontSize: 17, fontFamily: 'Noto', color: fontColor),)),
+                          ],
+                        )
                       )
                   ),
                 ],
@@ -319,7 +422,14 @@ class StoriesPage extends StatelessWidget {
                                         borderRadius: BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20)),
                                         color: Color(0xFF404850),
                                       ),
-                                      child: Center(child: new Text('by u/${post.commentAuthors[index]}', style: TextStyle(fontSize: 17, fontFamily: 'Noto', color: fontColor),)),
+                                      child: Row(
+                                        children: [
+                                          BackButton(
+                                              color: fontColor
+                                          ),
+                                          Center(child: new Text('by u/${post.author}', style: TextStyle(fontSize: 17, fontFamily: 'Noto', color: fontColor),)),
+                                        ],
+                                      )
                                     )
                                 ),
                               ],
